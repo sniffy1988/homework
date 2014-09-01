@@ -1,0 +1,158 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+/*================================RESET CSS===================*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+*{
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+/*================================END RESET=====================*/
+/*=================================STYCKY FOOTER================*/
+html, body {
+	height: 100%;
+}
+.wrapper {
+	min-height: 100%;
+	height: auto !important; /* This line and the next line are not necessary unless you need IE6 support */
+	height: 100%;
+	margin: 0 auto -50px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+	height: 50px; /* .push must be the same height as .footer */
+}
+
+/*======================================END STICKY FOOTER==========================*/
+.hidden{
+	display: none;
+}
+.footer p{
+	text-align: center;
+}
+#login{
+	width: 600px;
+	margin: 150px auto 0;
+	background: #ccc;
+	-webkit-border-radius: 10px;
+	        border-radius: 10px;
+}
+#login form{
+	overflow: hidden;
+	text-align: center;
+}
+#login input{
+	display: block;
+	width: 50%;
+	margin: 0 auto;
+}
+#login p{
+	text-transform: uppercase;
+	padding: 10px;
+}
+#login input[type="submit"]{
+	text-transform: uppercase;
+	width: 100px;
+	margin:50px auto 20px;
+}
+#login input[type="button"]{
+	width: 100px;
+	margin: 0 auto 50px;
+}
+#register{
+	width: 600px;
+	margin: 150px auto 0;
+	background: #ccc;
+	-webkit-border-radius: 10px;
+	        border-radius: 10px;
+	padding: 0 0 50px 0;
+}
+#register form{
+	overflow: hidden;
+	text-align: center;
+}
+#register input{
+	display: block;
+	width: 50%;
+	margin: 0 auto;
+}
+#register p{
+	text-transform: uppercase;
+	padding: 10px;
+}
+#register input[type="submit"]{
+	text-transform: uppercase;
+	width: 100px;
+	margin:50px auto 20px;
+}
+.error{
+	color: red;
+}
+.error_inp{
+	border-color: red;
+}
+.menu{
+	-webkit-border-radius: 10px;
+	        border-radius: 10px;
+	background: #ccc;
+	width: 500px;
+	margin: 100px auto 0;
+	overflow: hidden;
+}
+.menu a{
+	text-decoration: none;
+	color: blue;
+	text-transform: uppercase;
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+	width: auto;
+	margin: 10px 0 10px;
+}
+.menu a:hover{
+	text-decoration: underline;
+}
