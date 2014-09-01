@@ -23,7 +23,7 @@ ToDo:
 хранение маркера
 
 
-
+test
 
 
 final homework s-label js intensive
