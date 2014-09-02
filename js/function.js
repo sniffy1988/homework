@@ -1,5 +1,15 @@
 //Function construrtor for user
 $(document).ready(function(){
+	var storage = new ObjectStorage;
+	var user = localStorage.getItem("logged");
+	var greet = $('.greet').text();
+	if (user !== "") {
+		user = storage.local[user].name;
+		$('.greet').text(greet+user);
+		$('.greet').text(greet);
+		$('#login').addClass('hidden');
+		$('.menu').removeClass('hidden');
+	}
 	$('#login_form').on('click','#reg',function(){
 		$('#login').addClass('hidden');
 		$('#register').removeClass('hidden');
@@ -8,8 +18,6 @@ $(document).ready(function(){
 		var pass1 = $('#pass1').val();
 		var pass2 = $('#pass2').val();
 		var login = $('#log').val();
-		var storage = new ObjectStorage;
-		debugger;
 		if (login === "") {
 			$('.login').text('Login must contains 4 simbols minimum!');
 			$('.login').addClass('error');
@@ -33,15 +41,66 @@ $(document).ready(function(){
 				$('.login').addClass('error');
 			}
 		}
-		storage.local[login] = {'name': login,'password': pass1, logged: true}
+		storage.local[login] = {'name': login,'password': pass1};
+		localStorage.setItem('logged', login);
+		$('#register').addClass('hidden');
+		$('.menu').removeClass('hidden');
 	};
 	//enter to site!!!
 	function login(){
+		debugger;
 		var login = $('#name').val();
 		var pass = $('#password').val();
+		var log = localStorage.getItem('logged');
+		var password = "";
+		if(log){
+			var user = localStorage.getItem('logged');
+		}
+		if (login === "") {
+			$('.log').text('please type your login!');
+			$('.log').addClass('error');
+		}
+		if (pass === "") {
+			$('.pas').text('please type your pasword!');
+			$('.pas').addClass('error');
+		}
+		for( var key in storage.local){
+			if (login === storage.local[key].name) {
+				password = storage.local[key].password;
+			}
+		}
+		if (password === "") {
+			$('.log').text('wrong username!');
+			$('.log').addClass('error');
+			return false;
+		}
+		if (pass === password) {
+			user = storage.local[login];
+			$('.greet').text(greet+login);
+			$('#login').addClass('hidden');
+			$('.menu').removeClass('hidden');
+			localStorage.setItem('logged',login);
+		}else{
+			$('.pas').text('wrong pasword');
+			$('.pas').addClass('error');
+		}
+	};
+	function logout(){
+			localStorage.setItem('logged', "");
+			$('.greet').text(greet);
+			$('.menu').addClass('hidden');
+			$('#login').removeClass('hidden');
+			$('#name').val("");
+			$('#password').val("");
 	};
 	$('#registration').submit(function(){
 		validateRegister();
+	});
+	$('#login_form').submit(function(){
+		login();
+	});
+	$('.logout').click(function(){
+		logout();
 	});
 });
 var ObjectStorage = function ObjectStorage( name, duration ) {

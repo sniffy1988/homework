@@ -156,3 +156,8 @@ html, body {
 .menu a:hover{
 	text-decoration: underline;
 }
+.greet{
+	text-align: center;
+	padding-top: 10px;
+	color: navy;
+}
