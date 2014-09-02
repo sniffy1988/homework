@@ -113,6 +113,8 @@ $(document).ready(function(){
       mapOptions);
 	}
 });
+//geoposition
+
 var ObjectStorage = function ObjectStorage( name, duration ) {
     var self,
         name = name || '_objectStorage',
