@@ -102,7 +102,11 @@ $(document).ready(function(){
 	$('.logout').click(function(){
 		logout();
 	});
-	map();
+	$('.map_btn').click(function(){
+		$('.menu').addClass('hidden');
+		$('.map').removeClass('hidden');
+		initialize();
+	});
 });
 //geoposition
 
@@ -166,7 +170,6 @@ ObjectStorage.prototype = {
 };
 
 //MAP
-	function map(){
 		var map;
 		function initialize() {
 			var mapOptions = {
@@ -176,4 +179,8 @@ ObjectStorage.prototype = {
 		map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
 	}
 	google.maps.event.addDomListener(window, 'load', initialize);
-	}
+	google.maps.event.addDomListener(window, "resize", function() {
+	 var center = map.getCenter();
+	 google.maps.event.trigger(map, "resize");
+	 map.setCenter(center); 
+	});
