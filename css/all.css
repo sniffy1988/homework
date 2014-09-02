@@ -161,7 +161,7 @@ html, body {
 	padding-top: 10px;
 	color: navy;
 }
-#map_canvas{
+#map-canvas{
 	width: 100%;
-	height: 100px;
+	height: 600px;
 }

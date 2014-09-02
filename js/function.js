@@ -1,12 +1,11 @@
 //Function construrtor for user
 $(document).ready(function(){
-	var storage = new ObjectStorage;
+	var storage = new ObjectStorage();
 	var user = localStorage.getItem("logged");
 	var greet = $('.greet').text();
-	if (user !== "") {
+	if (user !== "" && user !== null) {
 		user = storage.local[user].name;
 		$('.greet').text(greet+user);
-		$('.greet').text(greet);
 		$('#login').addClass('hidden');
 		$('.menu').removeClass('hidden');
 	}
@@ -43,6 +42,7 @@ $(document).ready(function(){
 		}
 		storage.local[login] = {'name': login,'password': pass1};
 		localStorage.setItem('logged', login);
+		$('.greet').text(greet+login);
 		$('#register').addClass('hidden');
 		$('.menu').removeClass('hidden');
 	};
@@ -102,16 +102,7 @@ $(document).ready(function(){
 	$('.logout').click(function(){
 		logout();
 	});
-//MAP
-	var map;
-	function initialize() {
-  	var mapOptions = {
-    	zoom: 8,
-    	center: new google.maps.LatLng(-34.397, 150.644)
-  	};
-  	map = new google.maps.Map(document.getElementById('map_canvas'),
-      mapOptions);
-	}
+	map();
 });
 //geoposition
 
@@ -173,3 +164,16 @@ ObjectStorage.prototype = {
     local: {},
     session: {}
 };
+
+//MAP
+	function map(){
+		var map;
+		function initialize() {
+			var mapOptions = {
+			zoom: 8,
+			center: new google.maps.LatLng(-34.397, 150.644)
+		};
+		map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+	}
