@@ -102,6 +102,16 @@ $(document).ready(function(){
 	$('.logout').click(function(){
 		logout();
 	});
+//MAP
+	var map;
+	function initialize() {
+  	var mapOptions = {
+    	zoom: 8,
+    	center: new google.maps.LatLng(-34.397, 150.644)
+  	};
+  	map = new google.maps.Map(document.getElementById('map_canvas'),
+      mapOptions);
+	}
 });
 var ObjectStorage = function ObjectStorage( name, duration ) {
     var self,
