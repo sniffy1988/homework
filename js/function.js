@@ -5,7 +5,6 @@ $(document).ready(function(){
 	var greet = $('.greet').text();
 	var latitudeCurrent = 0 , longitudeCurrent = 0;
 	navigator.geolocation.getCurrentPosition(showPosition);
-	var mark = storage.local[user].markers;
 	if (user !== "" && user !== null) {
 		user = storage.local[user].name;
 		$('.greet').text(greet+user);
@@ -109,6 +108,7 @@ $(document).ready(function(){
 		$('.menu').addClass('hidden');
 		$('.map').removeClass('hidden');
 		initialize();
+		getMarker();
 	});
 
 
@@ -137,28 +137,24 @@ $(document).ready(function(){
 
   		map = new google.maps.Map(document.getElementById("map-canvas"),
       	mapOptions);
-
-      	function getMarkers(marker){
-			for(var i = 0 ; i< marker.length; i++){
-				var loc = new google.maps.LatLng(marker[i].location.B,marker[i].location.k);
-				var mar = new google.maps.Marker({
-		      	position: loc,
-		      	map: map,
-		      	title: marker[i].title,
-		      	optimized: false
-		  		});
-		  		//marker.setMap(map);
-		  		console.log('add');
-			}
+  		google.maps.event.addListener(map, 'click', function(event) {
+    		placeMarker(event.latLng);
+  		});
 }
 
+function getMarker(){
+	var userMarker = storage.local[user].markers;
+	for(var i =0; i < userMarker.length; i++){
+		var marker = new google.maps.Marker({
+			position: new google.maps.LatLng(userMarker[i].location.B, userMarker[i].location.k),
+			map: map,
+			title: userMarker[i].title
+		});
+		marker.setMap(map);
+		console.log(userMarker[i]);
+	}
+}
   	
-  	google.maps.event.addListener(map, 'click', function(event) {
-    placeMarker(event.latLng);
-  });
-  	getMarkers(mark);
-}
-
 function placeMarker(location) {
   var marker = new google.maps.Marker({
       position: location,
