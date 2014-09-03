@@ -5,6 +5,7 @@ $(document).ready(function(){
 	var greet = $('.greet').text();
 	var latitudeCurrent = 0 , longitudeCurrent = 0;
 	navigator.geolocation.getCurrentPosition(showPosition);
+	var mark = storage.local[user].markers;
 	if (user !== "" && user !== null) {
 		user = storage.local[user].name;
 		$('.greet').text(greet+user);
@@ -42,7 +43,7 @@ $(document).ready(function(){
 				$('.login').addClass('error');
 			}
 		}
-		storage.local[login] = {'name': login,'password': pass1};
+		storage.local[login] = {'name': login,'password': pass1, markers:[]};
 		localStorage.setItem('logged', login);
 		$('.greet').text(greet+login);
 		$('#register').addClass('hidden');
@@ -125,41 +126,37 @@ $(document).ready(function(){
 	}
 
 //MAP
-		var stockholm = new google.maps.LatLng(59.32522, 18.07002);
-		var parliament = new google.maps.LatLng(59.327383, 18.06747);
-		var marker;
 		var map;
 
 		function initialize() {
 		  var mapOptions = {
 		    zoom: 13,
 		    mapTypeId: google.maps.MapTypeId.ROADMAP,
-		    center: stockholm
+		    center: new google.maps.LatLng(latitudeCurrent,longitudeCurrent)
  		 };
 
   		map = new google.maps.Map(document.getElementById("map-canvas"),
       	mapOptions);
 
-  		marker = new google.maps.Marker({
-   		map:map,
-    	draggable:true,
-    	animation: google.maps.Animation.DROP,
-    	position: parliament
-  		});
-  	google.maps.event.addListener(marker, 'click', toggleBounce);
+      	function getMarkers(marker){
+			for(var i = 0 ; i< marker.length; i++){
+				var loc = new google.maps.LatLng(marker[i].location.B,marker[i].location.k);
+				var mar = new google.maps.Marker({
+		      	position: loc,
+		      	map: map,
+		      	title: marker[i].title,
+		      	optimized: false
+		  		});
+		  		//marker.setMap(map);
+		  		console.log('add');
+			}
+}
+
+  	
   	google.maps.event.addListener(map, 'click', function(event) {
     placeMarker(event.latLng);
   });
-  
-}
-
-function toggleBounce() {
-
-  if (marker.getAnimation() != null) {
-    marker.setAnimation(null);
-  } else {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-  }
+  	getMarkers(mark);
 }
 
 function placeMarker(location) {
@@ -168,6 +165,12 @@ function placeMarker(location) {
       map: map,
       title: prompt('enter title')
   });
+  //storing marker
+  storage.local[user].markers.push({
+  	location : marker.position,
+  	title: marker.title
+  });
+  console.log(storage.local[user].markers);
   }
 });
 var ObjectStorage = function ObjectStorage( name, duration ) {
