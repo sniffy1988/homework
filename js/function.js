@@ -3,6 +3,8 @@ $(document).ready(function(){
 	var storage = new ObjectStorage();
 	var user = localStorage.getItem("logged");
 	var greet = $('.greet').text();
+	var latitudeCurrent = 0 , longitudeCurrent = 0;
+	navigator.geolocation.getCurrentPosition(showPosition);
 	if (user !== "" && user !== null) {
 		user = storage.local[user].name;
 		$('.greet').text(greet+user);
@@ -107,9 +109,67 @@ $(document).ready(function(){
 		$('.map').removeClass('hidden');
 		initialize();
 	});
-});
-//geoposition
 
+
+
+
+
+	//geoposition
+	function showPosition (position){
+		var latitude = position.coords.latitude;
+		var longitude = position.coords.longitude;
+		latitudeCurrent = latitude;
+		longitudeCurrent = longitude;
+		console.log(latitude);
+		console.log(longitude);
+	}
+
+//MAP
+		var stockholm = new google.maps.LatLng(59.32522, 18.07002);
+		var parliament = new google.maps.LatLng(59.327383, 18.06747);
+		var marker;
+		var map;
+
+		function initialize() {
+		  var mapOptions = {
+		    zoom: 13,
+		    mapTypeId: google.maps.MapTypeId.ROADMAP,
+		    center: stockholm
+ 		 };
+
+  		map = new google.maps.Map(document.getElementById("map-canvas"),
+      	mapOptions);
+
+  		marker = new google.maps.Marker({
+   		map:map,
+    	draggable:true,
+    	animation: google.maps.Animation.DROP,
+    	position: parliament
+  		});
+  	google.maps.event.addListener(marker, 'click', toggleBounce);
+  	google.maps.event.addListener(map, 'click', function(event) {
+    placeMarker(event.latLng);
+  });
+  
+}
+
+function toggleBounce() {
+
+  if (marker.getAnimation() != null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
+
+function placeMarker(location) {
+  var marker = new google.maps.Marker({
+      position: location,
+      map: map,
+      title: prompt('enter title')
+  });
+  }
+});
 var ObjectStorage = function ObjectStorage( name, duration ) {
     var self,
         name = name || '_objectStorage',
@@ -168,19 +228,3 @@ ObjectStorage.prototype = {
     local: {},
     session: {}
 };
-
-//MAP
-		var map;
-		function initialize() {
-			var mapOptions = {
-			zoom: 8,
-			center: new google.maps.LatLng(-34.397, 150.644)
-		};
-		map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-	}
-	google.maps.event.addDomListener(window, 'load', initialize);
-	google.maps.event.addDomListener(window, "resize", function() {
-	 var center = map.getCenter();
-	 google.maps.event.trigger(map, "resize");
-	 map.setCenter(center); 
-	});
