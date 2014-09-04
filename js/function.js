@@ -166,19 +166,28 @@ $(document).ready(function(){
 		    center: new google.maps.LatLng(latitudeCurrent,longitudeCurrent)
  		 }
 		function initialize() {
+ 		var userMarkersArray = [];
   		map = new google.maps.Map(document.getElementById("map-canvas"),
       	mapOptions);
       	var userMarker = storage.local[user].markers;
 		for(var i =0; i < userMarker.length; i++){
 			var marker = new google.maps.Marker({
 				position: new google.maps.LatLng(userMarker[i].location.B, userMarker[i].location.k),
-				map: map,
 				title: userMarker[i].title
 			});
+			userMarkersArray.push(marker);
 		}
+		showMarker();
   		google.maps.event.addListener(map, 'click', function(event) {
     		placeMarker(event.latLng);
   		});
+  		function showMarker(){
+  			if(userMarkersArray){
+  				for(var i in userMarkersArray){
+  					userMarkersArray[i].setMap(map);
+  				}
+  			}
+  		}
 }
 
   	
