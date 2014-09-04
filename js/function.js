@@ -113,6 +113,7 @@ $(document).ready(function(){
 	});
 	$('.users').on('click','li', function(){
 		$('.add_user').removeClass('hidden');
+		$('.show_map').removeClass('hidden');
 		$('.remove_user').addClass('hidden');
 		$('body').find('.active').removeClass('active');
 		$(this).addClass('active');
@@ -132,6 +133,7 @@ $(document).ready(function(){
 		$('body').find('.active').removeClass('active');
 		$(this).addClass('active');
 		$('.add_user').addClass('hidden');
+		$('.show_map').removeClass('hidden');
 		$('.remove_user').removeClass('hidden');
 	});
 	$('.remove_user').click(function(){

@@ -197,7 +197,10 @@ html, body {
 	background: #ccc;
 	color: #FFF;
 }
-.add_user, .remove_user{
+.add_user,
+.remove_user,
+.show_map,
+.your_map{
 	cursor: pointer;
 }
 .favour{
