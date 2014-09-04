@@ -108,7 +108,7 @@ $(document).ready(function(){
 		$('.menu').addClass('hidden');
 		$('.map').removeClass('hidden');
 		initialize();
-		getMarker();
+		getListUser();	
 	});
 
 
@@ -127,33 +127,27 @@ $(document).ready(function(){
 
 //MAP
 		var map;
-
-		function initialize() {
-		  var mapOptions = {
+		var mapOptions = {
 		    zoom: 13,
 		    mapTypeId: google.maps.MapTypeId.ROADMAP,
 		    center: new google.maps.LatLng(latitudeCurrent,longitudeCurrent)
- 		 };
-
+ 		 }
+		function initialize() {
   		map = new google.maps.Map(document.getElementById("map-canvas"),
       	mapOptions);
+      	var userMarker = storage.local[user].markers;
+		for(var i =0; i < userMarker.length; i++){
+			var marker = new google.maps.Marker({
+				position: new google.maps.LatLng(userMarker[i].location.B, userMarker[i].location.k),
+				map: map,
+				title: userMarker[i].title
+			});
+		}
   		google.maps.event.addListener(map, 'click', function(event) {
     		placeMarker(event.latLng);
   		});
 }
 
-function getMarker(){
-	var userMarker = storage.local[user].markers;
-	for(var i =0; i < userMarker.length; i++){
-		var marker = new google.maps.Marker({
-			position: new google.maps.LatLng(userMarker[i].location.B, userMarker[i].location.k),
-			map: map,
-			title: userMarker[i].title
-		});
-		marker.setMap(map);
-		console.log(userMarker[i]);
-	}
-}
   	
 function placeMarker(location) {
   var marker = new google.maps.Marker({
@@ -168,6 +162,20 @@ function placeMarker(location) {
   });
   console.log(storage.local[user].markers);
   }
+function getListUser(){
+	var listUsers = [];
+	for (var key in storage.local){
+		listUsers.push(storage.local[key].name);
+	}
+	var list = $('<ul/>')
+	for(var i = 0; i < listUsers.length; i++){
+		var li = $('<li/>');
+		li.text(listUsers[i]);
+		li.appendTo(list);
+	}
+	list.addClass('list_users');
+	list.appendTo($('.users'));
+}
 });
 var ObjectStorage = function ObjectStorage( name, duration ) {
     var self,

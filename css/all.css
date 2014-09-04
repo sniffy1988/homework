@@ -169,3 +169,24 @@ html, body {
 	width: 100%;
 	height: 500px;
 }
+.users,.favor{
+	width: 20%;
+	border-right: 1px solid #000;
+	min-height: 100px;
+	float: left;
+}
+.users p,.favor p{
+	text-align: center;
+}
+.map_menu{
+	float: right;
+}
+.list_users li{
+	margin: 0 0 0 30px;
+	padding: 0 0 10px 0;
+	cursor: pointer;
+	font-weight: bold;
+}
+.list_users li:hover{
+	color: navy;
+}
