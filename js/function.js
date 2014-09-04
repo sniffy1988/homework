@@ -42,7 +42,7 @@ $(document).ready(function(){
 				$('.login').addClass('error');
 			}
 		}
-		storage.local[login] = {'name': login,'password': pass1, markers:[]};
+		storage.local[login] = {'name': login,'password': pass1, markers:[], f_users: []};
 		localStorage.setItem('logged', login);
 		$('.greet').text(greet+login);
 		$('#register').addClass('hidden');
@@ -108,10 +108,41 @@ $(document).ready(function(){
 		$('.menu').addClass('hidden');
 		$('.map').removeClass('hidden');
 		initialize();
-		getListUser();	
+		getListUser();
+		getFavorite();
 	});
-
-
+	$('.users').on('click','li', function(){
+		$('.add_user').removeClass('hidden');
+		$('.remove_user').addClass('hidden');
+		$('body').find('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+	$('.add_user').click(function(){
+		var favourite = $('.users').find('.active').text();
+		for(var i = 0; i < storage.local[user].f_users.length; i++){
+			if (favourite === storage.local[user].f_users[i]) {
+				alert('Selected user is already in favourite users!');
+				return false;
+			}
+		}
+		storage.local[user].f_users.push(favourite);
+		getFavorite();
+	});
+	$('.favor').on('click','li', function(){
+		$('body').find('.active').removeClass('active');
+		$(this).addClass('active');
+		$('.add_user').addClass('hidden');
+		$('.remove_user').removeClass('hidden');
+	});
+	$('.remove_user').click(function(){
+		var favourite = $('.favour').find('.active').text();
+		for ( var i = 0; i < storage.local[user].f_users.length; i++){
+			if (storage.local[user].f_users[i] === favourite) {
+				storage.local[user].f_users.splice(i,1);
+			}
+		}
+		getFavorite();
+	});
 
 
 
@@ -160,21 +191,42 @@ function placeMarker(location) {
   	location : marker.position,
   	title: marker.title
   });
-  console.log(storage.local[user].markers);
   }
 function getListUser(){
 	var listUsers = [];
 	for (var key in storage.local){
-		listUsers.push(storage.local[key].name);
+		if (user === storage.local[key].name) {
+			continue;
+		}else{
+			listUsers.push(storage.local[key].name);
+		}
 	}
 	var list = $('<ul/>')
 	for(var i = 0; i < listUsers.length; i++){
 		var li = $('<li/>');
 		li.text(listUsers[i]);
+		li.addClass('user_entry');
 		li.appendTo(list);
 	}
 	list.addClass('list_users');
 	list.appendTo($('.users'));
+}
+function getFavorite(){
+	var listUsers = [];
+	if($('.favour')){
+		$('.favour').detach();
+	}
+	for (var i = 0; i < storage.local[user].f_users.length; i++){
+		listUsers.push(storage.local[user].f_users[i]);
+	}
+	var fav_ul = $('<ul/>');
+	fav_ul.addClass('favour');
+	for( var i = 0; i< listUsers.length; i++){
+		var fav_li = $('<li/>');
+		fav_li.text(listUsers[i]);
+		fav_li.appendTo(fav_ul);
+	}
+	fav_ul.appendTo($('.favor'));
 }
 });
 var ObjectStorage = function ObjectStorage( name, duration ) {

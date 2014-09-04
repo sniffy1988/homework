@@ -61,7 +61,7 @@ html, body {
 	min-height: 100%;
 	height: auto !important; /* This line and the next line are not necessary unless you need IE6 support */
 	height: 100%;
-	margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
+	margin: 0 auto -50px; /* the bottom margin is the negative value of the footer's height */
 }
 .footer, .push {
 	height: 50px; /* .push must be the same height as .footer */
@@ -180,13 +180,34 @@ html, body {
 }
 .map_menu{
 	float: right;
+	padding: 0 30px 0 0;
+}
+.list_users{
+	text-align: center;
 }
 .list_users li{
-	margin: 0 0 0 30px;
 	padding: 0 0 10px 0;
 	cursor: pointer;
 	font-weight: bold;
 }
 .list_users li:hover{
+	color: navy;
+}
+.active{
+	background: #ccc;
+	color: #FFF;
+}
+.add_user, .remove_user{
+	cursor: pointer;
+}
+.favour{
+	text-align: center;
+}
+.favour li{
+	font-weight: bold;
+	cursor: pointer;
+	padding: 0 0 10px 0;
+}
+.favour li:hover{
 	color: navy;
 }
