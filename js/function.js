@@ -96,6 +96,7 @@ $(document).ready(function(){
 			$('#login').removeClass('hidden');
 			$('#name').val("");
 			$('#password').val("");
+			location.hash = "";
 	};
 	$('#registration').submit(function(){
 		validateRegister();
@@ -107,9 +108,9 @@ $(document).ready(function(){
 		logout();
 	});
 	$('.map_btn').click(function(){
+		location.hash = "#map";
 		$('.menu').addClass('hidden');
 		$('.map').removeClass('hidden');
-		location.hash = "map"
 		google.maps.event.addDomListener(window, 'load', initialize());
 		//initialize();
 		getListUser();
