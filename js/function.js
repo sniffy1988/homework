@@ -107,7 +107,8 @@ $(document).ready(function(){
 	$('.map_btn').click(function(){
 		$('.menu').addClass('hidden');
 		$('.map').removeClass('hidden');
-		initialize();
+		google.maps.event.addDomListener(window, 'load', initialize());
+		//initialize();
 		getListUser();
 		getFavorite();
 	});
@@ -147,15 +148,13 @@ $(document).ready(function(){
 	});
 
 
-
+	var current;
 	//geoposition
 	function showPosition (position){
 		var latitude = position.coords.latitude;
 		var longitude = position.coords.longitude;
-		latitudeCurrent = latitude;
-		longitudeCurrent = longitude;
-		console.log(latitude);
-		console.log(longitude);
+		latitudeCurrent = (latitude).toFixed(4);
+		longitudeCurrent = (longitude).toFixed(4);
 	}
 
 //MAP
@@ -163,24 +162,37 @@ $(document).ready(function(){
 		var mapOptions = {
 		    zoom: 13,
 		    mapTypeId: google.maps.MapTypeId.ROADMAP,
-		    center: new google.maps.LatLng(latitudeCurrent,longitudeCurrent)
+		    center: new google.maps.LatLng(0,0)
  		 }
 		function initialize() {
  		var userMarkersArray = [];
   		map = new google.maps.Map(document.getElementById("map-canvas"),
       	mapOptions);
+      	map.setCenter(new google.maps.LatLng(latitudeCurrent,longitudeCurrent));
       	var userMarker = storage.local[user].markers;
 		for(var i =0; i < userMarker.length; i++){
+			var loc = new google.maps.LatLng(userMarker[i].latitude,userMarker[i].longitude);
 			var marker = new google.maps.Marker({
-				position: new google.maps.LatLng(userMarker[i].location.B, userMarker[i].location.k),
+				position: loc,
 				title: userMarker[i].title
 			});
 			userMarkersArray.push(marker);
 		}
-		showMarker();
   		google.maps.event.addListener(map, 'click', function(event) {
     		placeMarker(event.latLng);
   		});
+		showMarker();
+  		google.maps.event.addDomListener(document.getElementById("show"), 'click', function(){
+  			hideMarker();
+  			$('#show').addClass('hidden');
+  			$('#hide').removeClass('hidden');
+  		});
+  		google.maps.event.addDomListener(document.getElementById("hide"), 'click', function(){
+  			showMarker();
+  			$('#hide').addClass('hidden');
+  			$('#show').removeClass('hidden');
+  		});
+
   		function showMarker(){
   			if(userMarkersArray){
   				for(var i in userMarkersArray){
@@ -188,8 +200,14 @@ $(document).ready(function(){
   				}
   			}
   		}
+  		function hideMarker(){
+  			if(userMarkersArray){
+  				for(var i in userMarkersArray){
+  					userMarkersArray[i].setMap(null);
+  				}
+  			}
+  		}
 }
-
   	
 function placeMarker(location) {
   var marker = new google.maps.Marker({
@@ -199,7 +217,8 @@ function placeMarker(location) {
   });
   //storing marker
   storage.local[user].markers.push({
-  	location : marker.position,
+  	latitude:marker.getPosition().lat(),
+  	longitude: marker.getPosition().lng(),
   	title: marker.title
   });
   }
