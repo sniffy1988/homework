@@ -167,18 +167,10 @@ $(document).ready(function(){
 		function initialize() {
  		var userMarkersArray = [];
  		var currentMarkers;
+ 		getHomeMarkers();
   		map = new google.maps.Map(document.getElementById("map-canvas"),
       	mapOptions);
       	map.setCenter(new google.maps.LatLng(latitudeCurrent,longitudeCurrent));
-      	var userMarker = storage.local[user].markers;
-		for(var i =0; i < userMarker.length; i++){
-			var loc = new google.maps.LatLng(userMarker[i].latitude,userMarker[i].longitude);
-			var marker = new google.maps.Marker({
-				position: loc,
-				title: userMarker[i].title
-			});
-			userMarkersArray.push(marker);
-		}
   		google.maps.event.addListener(map, 'click', function(event) {
     		placeMarker(event.latLng);
   		});
@@ -201,7 +193,17 @@ $(document).ready(function(){
     			placeMarker(event.latLng);
   			});
   		});
-
+  		function getHomeMarkers(){
+  			var userMarker = storage.local[user].markers;
+			for(var i =0; i < userMarker.length; i++){
+				var loc = new google.maps.LatLng(userMarker[i].latitude,userMarker[i].longitude);
+				var marker = new google.maps.Marker({
+					position: loc,
+					title: userMarker[i].title
+				});
+			userMarkersArray.push(marker);
+			}
+  		}
   		function showMarker(userMarkersArray){
   			if(userMarkersArray){
   				for(var i in userMarkersArray){
@@ -229,21 +231,26 @@ $(document).ready(function(){
 			}
 			return marker_array;
 		}
+		function placeMarker(location) {
+  			var marker = new google.maps.Marker({
+     			position: location,
+      			map: map,
+      			title: prompt('enter title')
+  			});
+  			//storing marker
+  			storage.local[user].markers.push({
+  			latitude:marker.getPosition().lat(),
+  			longitude: marker.getPosition().lng(),
+  			title: marker.title
+  			});
+  			debugger;
+  			marker.setMap(null);
+  			getHomeMarkers();
+  			showMarker(userMarkersArray);
+  		}
 }
 
-function placeMarker(location) {
-  var marker = new google.maps.Marker({
-      position: location,
-      map: map,
-      title: prompt('enter title')
-  });
-  //storing marker
-  storage.local[user].markers.push({
-  	latitude:marker.getPosition().lat(),
-  	longitude: marker.getPosition().lng(),
-  	title: marker.title
-  });
-  }
+
 function getListUser(){
 	var listUsers = [];
 	for (var key in storage.local){
