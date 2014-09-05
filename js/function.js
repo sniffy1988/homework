@@ -166,6 +166,7 @@ $(document).ready(function(){
  		 }
 		function initialize() {
  		var userMarkersArray = [];
+ 		var currentMarkers;
   		map = new google.maps.Map(document.getElementById("map-canvas"),
       	mapOptions);
       	map.setCenter(new google.maps.LatLng(latitudeCurrent,longitudeCurrent));
@@ -181,34 +182,55 @@ $(document).ready(function(){
   		google.maps.event.addListener(map, 'click', function(event) {
     		placeMarker(event.latLng);
   		});
-		showMarker();
+		showMarker(userMarkersArray);
   		google.maps.event.addDomListener(document.getElementById("show"), 'click', function(){
-  			hideMarker();
+  			hideMarker(userMarkersArray);
+  			var userArray = getAnotherMarker();
+  			showMarker(userArray);
+  			currentMarkers = userArray;
+  			google.maps.event.clearListeners(map, 'click');
   			$('#show').addClass('hidden');
   			$('#hide').removeClass('hidden');
   		});
   		google.maps.event.addDomListener(document.getElementById("hide"), 'click', function(){
-  			showMarker();
+  			showMarker(userMarkersArray);
+  			hideMarker(currentMarkers);
   			$('#hide').addClass('hidden');
   			$('#show').removeClass('hidden');
+  			google.maps.event.addListener(map, 'click', function(event) {
+    			placeMarker(event.latLng);
+  			});
   		});
 
-  		function showMarker(){
+  		function showMarker(userMarkersArray){
   			if(userMarkersArray){
   				for(var i in userMarkersArray){
   					userMarkersArray[i].setMap(map);
   				}
   			}
   		}
-  		function hideMarker(){
+  		function hideMarker(userMarkersArray){
   			if(userMarkersArray){
   				for(var i in userMarkersArray){
   					userMarkersArray[i].setMap(null);
   				}
   			}
   		}
+  		function getAnotherMarker(){
+			var marker_array =[];
+			var user = $('body').find('.active').text();
+			var markerArray = storage.local[user].markers;
+			for (var i =0; i < markerArray.length; i++){
+				var marker = new google.maps.Marker({
+					position: new google.maps.LatLng(markerArray[i].latitude,markerArray[i].longitude),
+					title: markerArray[i].title
+				}); 
+				marker_array.push(marker);
+			}
+			return marker_array;
+		}
 }
-  	
+
 function placeMarker(location) {
   var marker = new google.maps.Marker({
       position: location,
