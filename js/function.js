@@ -10,8 +10,10 @@ $(document).ready(function(){
 		$('.greet').text(greet+user);
 		$('#login').addClass('hidden');
 		$('.menu').removeClass('hidden');
+		location.hash = "#user";
 	}
 	$('#login_form').on('click','#reg',function(){
+		location.hash = "#register";
 		$('#login').addClass('hidden');
 		$('#register').removeClass('hidden');
 	});
@@ -50,7 +52,6 @@ $(document).ready(function(){
 	};
 	//enter to site!!!
 	function login(){
-		debugger;
 		var login = $('#name').val();
 		var pass = $('#password').val();
 		var log = localStorage.getItem('logged');
@@ -82,6 +83,7 @@ $(document).ready(function(){
 			$('#login').addClass('hidden');
 			$('.menu').removeClass('hidden');
 			localStorage.setItem('logged',login);
+			location.hash = "#user";
 		}else{
 			$('.pas').text('wrong pasword');
 			$('.pas').addClass('error');
@@ -107,6 +109,7 @@ $(document).ready(function(){
 	$('.map_btn').click(function(){
 		$('.menu').addClass('hidden');
 		$('.map').removeClass('hidden');
+		location.hash = "map"
 		google.maps.event.addDomListener(window, 'load', initialize());
 		//initialize();
 		getListUser();
@@ -243,7 +246,6 @@ $(document).ready(function(){
   			longitude: marker.getPosition().lng(),
   			title: marker.title
   			});
-  			debugger;
   			marker.setMap(null);
   			getHomeMarkers();
   			showMarker(userMarkersArray);
